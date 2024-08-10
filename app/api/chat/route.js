@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server"
 import OpenAI from "openai";
+import { Pinecone } from '@pinecone-database/pinecone';
+import { OpenAIEmbeddings } from "@langchain/openai";
 
 const systemPrompt = `
     Hello! I'm your virtual assistant here to help you with any questions or issues you might have about Headerstarter. Whether you're gearing up for your next big technical interview or need assistance navigating the platform, I'm here to ensure you have the best experience possible. Here’s how I can assist you:
@@ -36,39 +38,15 @@ const systemPrompt = `
     Support Contact: How to reach our support team for further assistance if needed.
     `
 
-// export async function POST(req) {
-//     try {
-//         // Parse the JSON body from the request
-//         const data = await req.json();
-        
-//         // Log the parsed data to inspect it
-//         console.log("Parsed request data:", data);
-        
-//         // Initialize OpenAI client (assuming you have configured it properly)
-//         const openai = new OpenAI();
-        
-//         // Create a completion using OpenAI (commented out as this is for example purposes)
-//         // const completion = await openai.chat.completions.create({
-//         //     messages: [
-//         //         { role: "system", content: systemPrompt },
-//         //         { role: "user", content: "Who won the world series in 2020?" },
-//         //         { role: "assistant", content: "The Los Angeles Dodgers won the World Series in 2020." },
-//         //         { role: "user", content: "Where was it played?" }
-//         //     ],
-//         //     model: "gpt-3.5-turbo",
-//         // });
-        
-//         // Log the completion response to inspect it
-//         // console.log("OpenAI completion response:", completion.choices[0].message.content);
-        
-//         // Return a JSON response
-//         return NextResponse.json({ message: "Hola amigo from the server" });
-//     } catch (error) {
-//         // Handle any errors that occur during the request processing
-//         console.error("Error processing request:", error);
-//         return NextResponse.json({ error: "Error processing request" }, { status: 500 });
-//     }
-// }
+const embededModel = "text-embedding-ada-002";
+
+const openAIKey = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+});
+
+const pc = new Pinecone({
+    apiKey: process.env.PINECONE_API_KEY,
+});
 
 export async function POST(req){
     const openai = new OpenAI()
