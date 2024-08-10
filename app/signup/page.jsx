@@ -1,15 +1,26 @@
 "use client"
 import { useState } from 'react';
-import '../globals.css'; // Ensure you import your global CSS file
+import '../globals.css';
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth } from "@/app/firebase/config";
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your sign-up logic here
-    console.log('Email:', email, 'Password:', password);
+
+    try {
+      const res = await createUserWithEmailAndPassword(email, password);
+      console.log({ res });
+      setEmail('');
+      setPassword('');
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
