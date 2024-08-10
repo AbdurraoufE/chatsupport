@@ -110,10 +110,10 @@ export default function Home() {
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
-      bgcolor="#1e1e1e" // Dark background color
-      margin="0" // Remove default margins
-      padding="0" // Remove default paddings
-      overflow="hidden" // Prevent scrolling outside the chatbox
+      bgcolor="#1e1e1e"
+      margin="0"
+      padding="0"
+      overflow="hidden"
     >
       {/* Logout button at the top */}
       <Box
@@ -123,7 +123,7 @@ export default function Home() {
         p={2}
         position="absolute"
         top="0"
-        zIndex={1} // Ensure it stays on top
+        zIndex={1}
       >
         <Button
           variant="contained"
@@ -140,10 +140,10 @@ export default function Home() {
           }}
           sx={{
             borderRadius: 20,
-            bgcolor: '#d32f2f', // Red background for the button
-            '&:hover': { bgcolor: '#b71c1c' }, // Darker red on hover
-            px: 3, // Extra padding for a better button appearance
-            textTransform: 'capitalize' // Ensure the text is properly capitalized
+            bgcolor: '#d32f2f',
+            '&:hover': { bgcolor: '#b71c1c' },
+            px: 3,
+            textTransform: 'capitalize'
           }}
         >
           Logout
@@ -153,14 +153,14 @@ export default function Home() {
       <Stack
         direction="column"
         width="100%"
-        maxWidth="800px" // Wider chat container
-        height="100%" // Full height of the viewport
-        borderRadius={12} // Slightly rounded corners for the container
-        bgcolor="#2c2c2c" // Darker background for the chat area
-        boxShadow="0 4px 8px rgba(0, 0, 0, 0.3)" // Subtle shadow for depth
+        maxWidth="800px"
+        height="100%"
+        borderRadius={12}
+        bgcolor="#2c2c2c"
+        boxShadow="0 4px 8px rgba(0, 0, 0, 0.3)"
         p={2}
         spacing={2}
-        overflow="hidden" // Prevent overflow inside the chat container
+        overflow="hidden"
       >
         {/* Messaging section */}
         <Stack
@@ -172,8 +172,8 @@ export default function Home() {
           sx={{
             scrollbarWidth: 'thin',
             '&::-webkit-scrollbar': { width: '8px' },
-            '&::-webkit-scrollbar-track': { backgroundColor: '#2c2c2c' }, // Match scrollbar track with the background
-            '&::-webkit-scrollbar-thumb': { backgroundColor: '#555', borderRadius: '4px' } // Darker thumb color blending with the background
+            '&::-webkit-scrollbar-track': { backgroundColor: '#2c2c2c' },
+            '&::-webkit-scrollbar-thumb': { backgroundColor: '#555', borderRadius: '4px' }
           }}
         >
           {messages.map((message, index) => (
@@ -186,13 +186,13 @@ export default function Home() {
             >
               <Box
                 bgcolor={
-                  message.role === "assistant" ? "#333" : "#007bff" // Dark gray for assistant, blue for user
+                  message.role === "assistant" ? "#333" : "#007bff"
                 }
                 color="white"
-                borderRadius={8} // Slightly rounded corners
+                borderRadius={8}
                 p={2}
-                maxWidth="80%" // Adjusted width for chat bubbles
-                sx={{ wordBreak: 'break-word' }} // Prevent overflow of long words
+                maxWidth="80%"
+                sx={{ wordBreak: 'break-word' }}
               >
                 <ReactMarkdown components={components}>
                   {message.content}
@@ -208,8 +208,8 @@ export default function Home() {
           spacing={1}
           alignItems="center"
           p={1}
-          borderTop="1px solid #444" // Darker border color
-          bgcolor="#2c2c2c" // Matching background color with the chat container
+          borderTop="1px solid #444"
+          bgcolor="#2c2c2c"
         >
           <TextField
             label="Message"
@@ -220,9 +220,9 @@ export default function Home() {
             size="small"
             sx={{
               borderRadius: 20,
-              bgcolor: "#333", // Dark background for the text field
-              input: { color: 'white' }, // White text color
-              fieldset: { borderColor: '#444' } // Darker border for the text field
+              bgcolor: "#333", 
+              input: { color: 'white' }, 
+              fieldset: { borderColor: '#444' } 
             }}
           />
           <Button
@@ -231,10 +231,10 @@ export default function Home() {
             onClick={sendMessage}
             sx={{
               borderRadius: 20,
-              bgcolor: '#007bff', // Blue background for the button
-              '&:hover': { bgcolor: '#0056b3' }, // Darker blue on hover
-              px: 3, // Extra padding for a better button appearance
-              textTransform: 'capitalize' // Ensure the text is properly capitalized
+              bgcolor: '#007bff',
+              '&:hover': { bgcolor: '#0056b3' },
+              px: 3,
+              textTransform: 'capitalize'
             }}
           >
             Send
