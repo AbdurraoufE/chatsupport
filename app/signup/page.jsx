@@ -1,5 +1,6 @@
 "use client"
 import { useState } from 'react';
+import { useRouter } from 'next/navigation'; // Import useRouter
 import '../globals.css';
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase/config";
@@ -9,6 +10,7 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
 
   const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
+  const router = useRouter(); // Initialize router
 
   const handleSignOut = async (e) => {
     e.preventDefault();
@@ -16,8 +18,11 @@ const SignUp = () => {
     try {
       const res = await createUserWithEmailAndPassword(email, password);
       console.log({ res });
+      sessionStorage.setItem('user', true);
       setEmail('');
       setPassword('');
+      // After sign-up, redirect to sign-in page
+      router.push("/signin");
     } catch (e) {
       console.error(e);
     }

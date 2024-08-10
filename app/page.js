@@ -1,10 +1,14 @@
 "use client";
 import Image from "next/image";
 import { Box, Stack, TextField, Button } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/app/firebase/config";
+import { useRouter } from "next/navigation";
+import { signOut } from "firebase/auth";
 
 export default function Home() {
   const [messages, setMessages] = useState([
@@ -14,11 +18,27 @@ export default function Home() {
     },
   ]);
 
-  const [message, setMessage] = useState(""); //what user types in the chat box
+  const [message, setMessage] = useState(""); // What user types in the chat box
+  const [user, loading] = useAuthState(auth); // Returns array of current user
+  const router = useRouter();
+  const [userSession, setUserSession] = useState(null);
+
+  // Only run on the client side
+  useEffect(() => {
+    const session = sessionStorage.getItem("user");
+    setUserSession(session);
+  }, []);
+
+  // If there's no user signed up, get them to the signup page
+  useEffect(() => {
+    if (!loading && !user && !userSession) {
+      router.push("/signup");
+    }
+  }, [loading, user, userSession, router]);
 
   const sendMessage = async () => {
     const userMessage = message;
-    setMessage(""); // when you send a message, the textbox will automatically be empty
+    setMessage(""); // When you send a message, the textbox will automatically be empty
 
     // Add the user message
     setMessages((prevMessages) => [
@@ -27,28 +47,28 @@ export default function Home() {
       { role: "assistant", content: "" },
     ]);
 
-    //fetches the response from the server
+    // Fetches the response from the server
     const response = fetch("/api/chat", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify([...messages, { role: "user", content: userMessage }]), //send another user message
-      // we get the response from the server
+      body: JSON.stringify([...messages, { role: "user", content: userMessage }]), // Send another user message
+      // We get the response from the server
     }).then(async (res) => {
-      //read it
+      // Read it
       const reader = res.body.getReader();
-      const decoder = new TextDecoder(); //decode it because we encoded it in the backend
+      const decoder = new TextDecoder(); // Decode it because we encoded it in the backend
 
       let result = "";
       return reader.read().then(function processText({ done, value }) {
         if (done) {
-          return result; //
+          return result;
         }
         const text = decoder.decode(value || new Int8Array(), { stream: true });
         setMessages((prevMessages) => {
-          let lastMessage = prevMessages[prevMessages.length - 1]; //last msg
-          let otherMessages = prevMessages.slice(0, prevMessages.length - 1); //gets all messages except the last one
+          let lastMessage = prevMessages[prevMessages.length - 1]; // Last msg
+          let otherMessages = prevMessages.slice(0, prevMessages.length - 1); // Gets all messages except the last one
           return [
             ...otherMessages,
             {
@@ -95,6 +115,41 @@ export default function Home() {
       padding="0" // Remove default paddings
       overflow="hidden" // Prevent scrolling outside the chatbox
     >
+      {/* Logout button at the top */}
+      <Box
+        width="100%"
+        display="flex"
+        justifyContent="flex-end"
+        p={2}
+        position="absolute"
+        top="0"
+        zIndex={1} // Ensure it stays on top
+      >
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => {
+            signOut(auth)
+              .then(() => {
+                console.log("Sign-out successful.");
+                router.push("/signup"); // Redirect after sign out
+              })
+              .catch((error) => {
+                console.error("Sign-out error:", error);
+              });
+          }}
+          sx={{
+            borderRadius: 20,
+            bgcolor: '#d32f2f', // Red background for the button
+            '&:hover': { bgcolor: '#b71c1c' }, // Darker red on hover
+            px: 3, // Extra padding for a better button appearance
+            textTransform: 'capitalize' // Ensure the text is properly capitalized
+          }}
+        >
+          Logout
+        </Button>
+      </Box>
+
       <Stack
         direction="column"
         width="100%"
@@ -114,7 +169,7 @@ export default function Home() {
           flexGrow={1}
           overflow="auto"
           p={2}
-          sx={{ 
+          sx={{
             scrollbarWidth: 'thin',
             '&::-webkit-scrollbar': { width: '8px' },
             '&::-webkit-scrollbar-track': { backgroundColor: '#2c2c2c' }, // Match scrollbar track with the background
@@ -146,7 +201,7 @@ export default function Home() {
             </Box>
           ))}
         </Stack>
-  
+
         {/* Text field and button */}
         <Stack
           direction="row"
@@ -163,7 +218,7 @@ export default function Home() {
             onChange={(e) => setMessage(e.target.value)}
             variant="outlined"
             size="small"
-            sx={{ 
+            sx={{
               borderRadius: 20,
               bgcolor: "#333", // Dark background for the text field
               input: { color: 'white' }, // White text color
@@ -174,7 +229,7 @@ export default function Home() {
             variant="contained"
             color="primary"
             onClick={sendMessage}
-            sx={{ 
+            sx={{
               borderRadius: 20,
               bgcolor: '#007bff', // Blue background for the button
               '&:hover': { bgcolor: '#0056b3' }, // Darker blue on hover
