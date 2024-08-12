@@ -1,5 +1,4 @@
-# Visit the website!
-[Link to website](https://chatsupport-ppmh.vercel.app/landingpage)
+# [Visit the website](https://chatsupport-ppmh.vercel.app/landingpage)
 
 # What is used:
 - JavaScript
