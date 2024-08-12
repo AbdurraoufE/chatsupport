@@ -102,6 +102,33 @@ export default function Home() {
     },
   };
 
+  // Assuming this is inside a useEffect or an event handler
+const fetchData = async () => {
+  try {
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        // your request body
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error("Failed to fetch:", error);
+  }
+};
+
+fetchData();
+
+
   return (
     <Box
       width="100vw"
