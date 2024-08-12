@@ -27,44 +27,48 @@ const SignIn = () => {
   };
 
   return (
-    <div className="container">
-      <div className="form-container">
-        <h2 className="form-title">Sign In</h2>
-        <form onSubmit={handleSignIn} className="form">
-          <div className="form-group">
-            <label htmlFor="email" className="form-label">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="form-input"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password" className="form-label">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="form-input"
-            />
-          </div>
-          <button type="submit" className="form-button" disabled={loading}>
-            {loading ? "Signing In..." : "Sign In"}
-          </button>
-        </form>
-        {error && (
-          <div className="error-message">
-            <p>Error: {error.message}</p>
-            {error.code && <p>Code: {error.code}</p>}
-          </div>
-        )}
+    <div className="sign-in-page">
+      <div className="container">
+        <div className="form-container">
+          <h2 className="form-title">Sign In</h2>
+          <form onSubmit={handleSignIn} className="form">
+            <div className="form-group">
+              <label htmlFor="email" className="form-label">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="form-input"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password" className="form-label">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="form-input"
+              />
+            </div>
+            <button type="submit" className="form-button" disabled={loading}>
+              {loading ? "Signing In..." : "Sign In"}
+            </button>
+            <p>Don&apos;t have an account?</p>
+            <p className="already-account" onClick={() => router.push("/signup")}> SignUp Here</p>
+          </form>
+          {error && (
+            <div className="error-message">
+              <p>Error: {error.message}</p>
+              {error.code && <p>Code: {error.code}</p>}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { Box, Stack, TextField, Button } from "@mui/material";
 import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
@@ -32,7 +31,7 @@ export default function Home() {
   // If there's no user signed up, get them to the signup page
   useEffect(() => {
     if (!loading && !user && !userSession) {
-      router.push("/signup");
+      router.push("/landingpage");
     }
   }, [loading, user, userSession, router]);
 
@@ -102,6 +101,7 @@ export default function Home() {
     },
   };
 
+  
   return (
     <Box
       width="100vw"
@@ -131,12 +131,8 @@ export default function Home() {
           onClick={() => {
             signOut(auth)
               .then(() => {
-                console.log("Sign-out successful.");
                 router.push("/signup"); // Redirect after sign out
               })
-              .catch((error) => {
-                console.error("Sign-out error:", error);
-              });
           }}
           sx={{
             borderRadius: 20,

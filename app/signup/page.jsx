@@ -1,6 +1,6 @@
 "use client"
 import { useState } from 'react';
-import { useRouter } from 'next/navigation'; // Import useRouter
+import { useRouter } from 'next/navigation'; 
 import '../globals.css';
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase/config";
@@ -12,7 +12,7 @@ const SignUp = () => {
   const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
   const router = useRouter(); // Initialize router
 
-  const handleSignOut = async (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
 
     try {
@@ -29,38 +29,42 @@ const SignUp = () => {
   };
 
   return (
-    <div className="container">
-      <div className="form-container">
-        <h2 className="form-title">Sign Up</h2>
-        <form onSubmit={handleSignOut} className="form">
-          <div className="form-group">
-            <label htmlFor="email" className="form-label">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="form-input"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password" className="form-label">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="form-input"
-            />
-          </div>
-          <button type="submit" className="form-button">
-            Sign Up
-          </button>
-        </form>
+    <div className="sign-up-page">
+      <div className="container">
+        <div className="form-container">
+          <h2 className="form-title">Sign Up</h2>
+          <form onSubmit={handleSignUp} className="form">
+            <div className="form-group">
+              <label htmlFor="email" className="form-label">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="form-input"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password" className="form-label">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="form-input"
+              />
+            </div>
+            <button type="submit" className="form-button">
+              Sign Up
+            </button>
+            <p>Already have an account?</p>
+            <p className="already-account" onClick={() => router.push("/signin")}> Login Here</p>
+          </form>
+        </div>
       </div>
     </div>
   );
